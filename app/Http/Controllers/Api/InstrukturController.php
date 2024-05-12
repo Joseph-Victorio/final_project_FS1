@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Instruktur;
+use App\Models\Kelas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -14,11 +15,15 @@ class InstrukturController extends Controller
      */
     public function index()
     {
-        $data = Instruktur::all();
+        // ambil data instruktur berdasarkan id instruktur pada tabel kelas
+        $instruktur = Instruktur::with('kelas')->get();
+        $kelas = Kelas::with('instruktur')->get();
+
         return response()->json([
             'status' => true,
             'message' => 'success',
-            'data' => $data
+            'data' => $instruktur,
+            'kelas' => $kelas
         ], 200);
     }
 

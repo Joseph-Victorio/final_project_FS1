@@ -9,4 +9,10 @@ class Instruktur extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    // relasi ke tabel kelas
+    public function kelas()
+    {
+        return $this->hasMany(Kelas::class, 'id');
+    }
 }
