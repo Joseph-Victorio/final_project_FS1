@@ -30,9 +30,9 @@ class KelasController extends Controller
         $data = $request->validate([
             'nama_kelas' => 'required',
             'deskripsi' => 'required',
-            'hari' => 'required|date_format:Y-m-d',
-            'waktu_mulai' => 'required|date_format:H:i',
-            'waktu_selesai' => 'required|date_format:H:i',
+            'hari' => 'required',
+            'waktu_mulai' => 'required',
+            'waktu_selesai' => 'required',
             'kuota' => 'required',
             'foto' => 'nullable',
             'biaya' => 'required',

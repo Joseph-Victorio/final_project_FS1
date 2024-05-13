@@ -17,13 +17,10 @@ class InstrukturController extends Controller
     {
         // ambil data instruktur berdasarkan id instruktur pada tabel kelas
         $instruktur = Instruktur::with('kelas')->get();
-        $kelas = Kelas::with('instruktur')->get();
-
         return response()->json([
             'status' => true,
             'message' => 'success',
-            'data' => $instruktur,
-            'kelas' => $kelas
+            'data' => $instruktur
         ], 200);
     }
 

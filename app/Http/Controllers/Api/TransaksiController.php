@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Kelas;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -13,11 +14,11 @@ class TransaksiController extends Controller
      */
     public function index()
     {
-        $data = Transaksi::all();
+        $transaksi = Transaksi::with('instruktur', 'kelas')->get();
         return response()->json(
             [
                 'status' => true,
-                'data' => $data
+                'data' => $transaksi,
             ],
             200,
             [
@@ -33,7 +34,19 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'id_user' => 'required',
+            'id_kelas' => 'required',
+            'id_instruktur' => 'required',
+            'total_pembayaran' => 'required',
+            'status' => 'required',
+        ]);
+        $data = Transaksi::create($data);
+        return response()->json([
+            'status' => true,
+            'message' => 'success',
+            'data' => $data
+        ], 200);
     }
 
     /**
