@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Kelas;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 
 class TransaksiController extends Controller
@@ -54,7 +55,19 @@ class TransaksiController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = Transaksi::finOrFail($id);
+        if ($data) {
+            return response()->json([
+                'status' => true,
+                'message' => 'success',
+                'data' => $data
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'error'
+            ], 404);
+        }
     }
 
     /**
@@ -62,7 +75,25 @@ class TransaksiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = Transaksi::findOrFail($id);
+        $validator = Validator::make($request->all(), [
+            'id_user' => 'requirement',
+            'id_instruktur' => 'requirement',
+            'id_kelas' => 'requirement',
+            'total_pembayaran' => 'requirement',
+            'status' => 'requirement'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->error(),
+            ], 404);
+        }
+        $data->update($request->all());
+        return response()->json([
+            'status' => true,
+            'message' => 'success',
+            'data' => $data
+        ]);
     }
 
     /**
@@ -70,6 +101,6 @@ class TransaksiController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // 
     }
 }
